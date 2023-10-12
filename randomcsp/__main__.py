@@ -1,6 +1,7 @@
 from randomcsp.csp import CSP
 from randomcsp.solver.backtracking import backtracking
 from randomcsp.solver.backjumping import backjumping
+from randomcsp.solver.forwardchecking import forwardchecking
 
 def generate_queens(n: int)-> CSP:
     csp = CSP(n, n)
@@ -25,78 +26,108 @@ def generate_queens(n: int)-> CSP:
     return csp
 
 
-# problem.constraints = [
-#     [None,None,[(0, 2), (0, 4), (1, 0), (1, 2), (2, 0), (2, 3), (3, 0), (3, 1), (3, 3), (3, 4), (4, 0), (4, 2)],None,[(0, 3), (1, 2), (2, 0), (2, 2), (2, 3), (2, 4), (3, 0), (3, 2), (3, 3), (3, 4), (4, 1), (4, 2)]],
-#     [None,None,None,[(0, 3), (1, 0), (1, 1), (1, 2), (2, 0), (2, 3), (2, 4), (3, 0), (3, 2), (3, 3), (3, 4), (4, 2)],None],
-#     [None,None,None,[(0, 1), (0, 4), (1, 0), (1, 1), (1, 2), (1, 4), (2, 0), (3, 0), (3, 4), (4, 0), (4, 1), (4, 3)],[(0, 0), (0, 1), (0, 4), (1, 1), (1, 2), (2, 3), (2, 4), (3, 1), (3, 2), (4, 0), (4, 2), (4, 4)]],
-#     [None,None,None,None,None],
-#     [None,None,None,None,None]
-#     ]
 
-# problem.print()
+# import time
 
-# bt = backtracking(problem)
-# print("BT :", bt)
-# bj = backjumping(problem)
-# print("BJ :", bj)
-# if bt != bj:
-#     print("\tNOT THE SAME RESULT !")
-# count = 0
-# for i in range(1):
-#     csp = CSP(12,12)
-#     csp.generate_constraints(0.5, 0.5)
-#     bt = backtracking(csp)
-#     bj = backjumping(csp)
-#     if bt != bj: count += 1
-# print("BT != BJ COUNT :", count)
+# csp = CSP(12, 12)
+# csp.generate_constraints(0.5, 0.5)
 
-################
+# average_wall_time = 0
+# average_cpu_time = 0
 
-# Timing : 
-# time.perf_counter() : wall time, arbitrary so more precise than epoch-related timing
-# time.process_time() : CPU time
+# loops = 10
 
-import time
+# for i in range(loops):
 
-csp = CSP(12, 12)
-csp.generate_constraints(0.5, 0.5)
+#     cpu_start = time.process_time()
+#     wall_start = time.perf_counter()
+#     backtracking(csp)
+#     wall_end = time.perf_counter()
+#     cpu_end = time.process_time()
 
-average_wall_time = 0
-average_cpu_time = 0
+#     cpu_delta = cpu_end - cpu_start
+#     wall_delta = wall_end - wall_start
+#     average_cpu_time += cpu_delta
+#     average_wall_time += wall_delta
 
-loops = 10
+#     print(f"[{i}]")
+#     print("\tCPU :", cpu_delta)
+#     print("\tWall :", wall_delta)
+# print("\n")
 
-for i in range(loops):
+# average_cpu_time = average_cpu_time / loops
+# average_wall_time = average_wall_time / loops
+# print("Average CPU :", average_cpu_time)
+# print("Average Wall :", average_wall_time)
 
-    cpu_start = time.process_time()
-    wall_start = time.perf_counter()
-    backtracking(csp)
-    wall_end = time.perf_counter()
-    cpu_end = time.process_time()
 
-    cpu_delta = cpu_end - cpu_start
-    wall_delta = wall_end - wall_start
-    average_cpu_time += cpu_delta
-    average_wall_time += wall_delta
+# for i in range(16,17+1):
+#     queens = generate_queens(i)
+#     print(f"Problème des {i} reines")
+#     average = 0
+#     for j in range(5):
+#         time_start = time.process_time()
+#         print(backjumping(queens))
+#         average += time.process_time() - time_start
+#     average = average / 5
+#     print("\tAverage CPU time :", average)
 
-    print(f"[{i}]")
-    print("\tCPU :", cpu_delta)
-    print("\tWall :", wall_delta)
+queens = generate_queens(4)
+print("BT :", backtracking(queens))
+print("BJ :", backjumping(queens))
+print("FC :", forwardchecking(queens))
+
+import math
+def progress(val, max, segment_amount = 10):
+    segment_size = int(max/segment_amount)
+    full = int(val//segment_size)
+    rest = val - full*segment_size
+    rest = math.floor((rest/segment_size)*4)
+
+    out = ""
+    out += '█' * full
+    if val < max:
+        if rest == 0:
+            out += ' '
+        elif rest == 1:
+            out += '░'
+        elif rest == 2:
+            out += '▒'
+        elif rest == 3:
+            out += '▓'
+        else:
+            out += '?'
+    out += ' ' * (segment_amount-full-1)
+    return out
+
+count = 0
 print("\n")
+for i in range(1, 101):
+    print(f"\r[{progress(i, 100, 48)}]", end = "")
+    csp = CSP(16, 10)
+    csp.generate_constraints(0.2, 0.20)
+    bt = backtracking(csp)
+    # print(bt)
+    bj = backjumping(csp)
+    # print(bj)
+    fc = forwardchecking(csp)
+    # print(fc)
+    if bt == bj == fc:
+        # print("SAME :", fc)
+        pass
+    else:
+        # print("DIFFERENT :", bt, bj, fc)
+        count += 1
+print("\n")
+print("\ndifferent count :", count)
 
-average_cpu_time = average_cpu_time / loops
-average_wall_time = average_wall_time / loops
-print("Average CPU :", average_cpu_time)
-print("Average Wall :", average_wall_time)
 
+# from time import perf_counter, process_time
 
-for i in range(16,17+1):
-    queens = generate_queens(i)
-    print(f"Problème des {i} reines")
-    average = 0
-    for j in range(5):
-        time_start = time.process_time()
-        backjumping(queens)
-        average += time.process_time() - time_start
-    average = average / 5
-    print("\tAverage CPU time :", average)
+# cpu_start = process_time()
+# wall_start = perf_counter()
+# print(backtracking(generate_queens(21)))
+# wall_end = perf_counter()
+# cpu_end = process_time()
+# print("Wall time :", wall_end - wall_start)
+# print("CPU time :", cpu_end - cpu_start)

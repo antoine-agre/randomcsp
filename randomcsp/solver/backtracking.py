@@ -20,7 +20,7 @@ def backtracking(csp: CSP):
             i -= 1
         else:
             i += 1
-            if i < csp.domain_size: domains[i] = [x for x in range(csp.domain_size)]
+            if i < csp.nb_variables: domains[i] = [x for x in range(csp.domain_size)]
 
     if i == -1:
         return None
