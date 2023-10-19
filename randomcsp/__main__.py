@@ -2,6 +2,8 @@ from randomcsp.csp import CSP
 from randomcsp.solver.backtracking import backtracking
 from randomcsp.solver.backjumping import backjumping
 from randomcsp.solver.forwardchecking import forwardchecking
+from randomcsp.timer.timer import measure, Parameter
+import matplotlib.pyplot as plt
 
 def generate_queens(n: int)-> CSP:
     csp = CSP(n, n)
@@ -27,107 +29,68 @@ def generate_queens(n: int)-> CSP:
 
 
 
-# import time
 
-# csp = CSP(12, 12)
-# csp.generate_constraints(0.5, 0.5)
 
-# average_wall_time = 0
-# average_cpu_time = 0
+###### Graphs
 
-# loops = 10
+def graph(time_type: str, x_values: list, data, variable_name: str):
 
-# for i in range(loops):
+    match time_type:
+        case "wall":
+            time_index = 0
+        case "cpu":
+            time_index = 1
+        case _:
+            raise Exception("time_type not recognized.")
 
-#     cpu_start = time.process_time()
-#     wall_start = time.perf_counter()
-#     backtracking(csp)
-#     wall_end = time.perf_counter()
-#     cpu_end = time.process_time()
+    x = x_values
+    y0 = data[time_index][0]
+    y1 = data[time_index][1]
+    y2 = data[time_index][2]
 
-#     cpu_delta = cpu_end - cpu_start
-#     wall_delta = wall_end - wall_start
-#     average_cpu_time += cpu_delta
-#     average_wall_time += wall_delta
+    plt.title(f"Temps de résolution moyen par rapport à [{variable_name}], {time_type} time")
+    plt.plot(x, y0, label = "Backtracking")
+    plt.plot(x, y1, label = "Backjumping")
+    plt.plot(x, y2, label = "Forward checking")
+    # plt.bar([x-0.2 for x in x], y0, width=0.2, label = "Backtracking")
+    # plt.bar(x, y1, width=0.2, label = "Backjumping")
+    # plt.bar([x+0.2 for x in x], y2, width=0.2, label = "Forward checking")
+    plt.xticks(x)
+    plt.legend()
+    plt.xlabel(variable_name.capitalize())
+    plt.ylabel("Temps moyen de résolution")
+    plt.show()
 
-#     print(f"[{i}]")
-#     print("\tCPU :", cpu_delta)
-#     print("\tWall :", wall_delta)
+x = [6,8,10,12]
+data = measure([backtracking, backjumping, forwardchecking], Parameter.NB_VARIABLES, x)
+
+for time_type in ["wall", "cpu"]:
+    graph(time_type, x, data, "nombre de variables")
+
+input("Entrée pour fermer la fenêtre.")
+
+# queens = generate_queens(4)
+# print("BT :", backtracking(queens))
+# print("BJ :", backjumping(queens))
+# print("FC :", forwardchecking(queens))
+
+# count = 0
 # print("\n")
-
-# average_cpu_time = average_cpu_time / loops
-# average_wall_time = average_wall_time / loops
-# print("Average CPU :", average_cpu_time)
-# print("Average Wall :", average_wall_time)
-
-
-# for i in range(16,17+1):
-#     queens = generate_queens(i)
-#     print(f"Problème des {i} reines")
-#     average = 0
-#     for j in range(5):
-#         time_start = time.process_time()
-#         print(backjumping(queens))
-#         average += time.process_time() - time_start
-#     average = average / 5
-#     print("\tAverage CPU time :", average)
-
-queens = generate_queens(4)
-print("BT :", backtracking(queens))
-print("BJ :", backjumping(queens))
-print("FC :", forwardchecking(queens))
-
-import math
-def progress(val, max, segment_amount = 10):
-    segment_size = int(max/segment_amount)
-    full = int(val//segment_size)
-    rest = val - full*segment_size
-    rest = math.floor((rest/segment_size)*4)
-
-    out = ""
-    out += '█' * full
-    if val < max:
-        if rest == 0:
-            out += ' '
-        elif rest == 1:
-            out += '░'
-        elif rest == 2:
-            out += '▒'
-        elif rest == 3:
-            out += '▓'
-        else:
-            out += '?'
-    out += ' ' * (segment_amount-full-1)
-    return out
-
-count = 0
-print("\n")
-for i in range(1, 101):
-    print(f"\r[{progress(i, 100, 48)}]", end = "")
-    csp = CSP(16, 10)
-    csp.generate_constraints(0.2, 0.20)
-    bt = backtracking(csp)
-    # print(bt)
-    bj = backjumping(csp)
-    # print(bj)
-    fc = forwardchecking(csp)
-    # print(fc)
-    if bt == bj == fc:
-        # print("SAME :", fc)
-        pass
-    else:
-        # print("DIFFERENT :", bt, bj, fc)
-        count += 1
-print("\n")
-print("\ndifferent count :", count)
-
-
-# from time import perf_counter, process_time
-
-# cpu_start = process_time()
-# wall_start = perf_counter()
-# print(backtracking(generate_queens(21)))
-# wall_end = perf_counter()
-# cpu_end = process_time()
-# print("Wall time :", wall_end - wall_start)
-# print("CPU time :", cpu_end - cpu_start)
+# for i in range(1, 101):
+#     print(f"\r[{progress(i, 100, 48)}]", end = "")
+#     csp = CSP(16, 10)
+#     csp.generate_constraints(0.2, 0.20)
+#     bt = backtracking(csp)
+#     # print(bt)
+#     bj = backjumping(csp)
+#     # print(bj)
+#     fc = forwardchecking(csp)
+#     # print(fc)
+#     if bt == bj == fc:
+#         # print("SAME :", fc)
+#         pass
+#     else:
+#         # print("DIFFERENT :", bt, bj, fc)
+#         count += 1
+# print("\n")
+# print("\ndifferent count :", count)

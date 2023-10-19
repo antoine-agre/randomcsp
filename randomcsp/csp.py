@@ -27,7 +27,7 @@ class CSP:
 
         Args:
             density (float): Dans [0;1], proportion des couples de variables qui doivent posséder une contrainte.
-            durete (float): Dans [0;1] ; pour toutes les contraintes, proportion des couples de valeurs possibles qui seront autorisées.0
+            durete (float): Dans [0;1] ; pour toutes les contraintes, proportion des couples de valeurs possibles qui seront autorisées.
         """
 
         # Calcul du nombre de contraintes
