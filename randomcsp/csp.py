@@ -6,11 +6,11 @@ class CSP:
     ## Constraints : on utilise toujours (i,j) avec i < j
 
     def __init__(self, nb_variables: int, domain_size: int) -> None:
-        """Génère un CSP (Constraint Satisfaction Problem) sans contraintes
-
+        """Initializes a CSP (Constraint Satisfaction Problem) with no constraints.
+        
         Args:
-            nb_variables (int): Le nombre de variables du CSP.
-            domain_size (int): La taille du domaine de chaque variable.
+            nb_variables (int): The number of variables of the CSP.
+            domain_size (int): The size of the domain of every variable.
         """
 
         self.nb_variables: int = nb_variables

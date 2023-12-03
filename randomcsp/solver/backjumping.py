@@ -9,10 +9,6 @@ def _generate_ancestors(csp: CSP)-> list[list[int]]:
                 ancestors[j].append(i)
     return ancestors
 
-def _generate_domains(csp: CSP)-> list[list[int]]:
-    domains: list[list[int]] = [[x for x in range(csp.domain_size)] for _ in range(csp.nb_variables)]
-    return domains
-
 def _union(set1: list, set2: list):
     output = set1.copy()
     for el in set2:
@@ -23,6 +19,8 @@ def _union(set1: list, set2: list):
 
 
 def backjumping(csp: CSP):
+    _backtrack_count: int = 0
+    _consistency_check_count: int = 0
     i: int = 0
     domains: list[list[int]] = [[] for _ in range(csp.nb_variables)]
     assignation: list[int|None] = [None for _ in range(csp.nb_variables)]
@@ -36,9 +34,11 @@ def backjumping(csp: CSP):
         while not ok and len(domains[i]) > 0:
             x: int = domains[i].pop(0)
             assignation[i] = x
+            _consistency_check_count += 1
             if csp.is_coherent(assignation): ok = True
         
         if not ok: #backjumping
+            _backtrack_count += 1
             iprev: int = i
             if len(current_ancestors[i]) > 0:
                 i = max(current_ancestors[i])
@@ -58,6 +58,6 @@ def backjumping(csp: CSP):
                 current_ancestors[i] = deepcopy(ancestors[i])
 
     if i == -1:
-        return None
+        return None, _backtrack_count, _consistency_check_count
     else:
-        return assignation
+        return assignation, _backtrack_count, _consistency_check_count
