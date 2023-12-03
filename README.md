@@ -1,11 +1,74 @@
 # Génération aléatoire et résolution de Problèmes de Satisfaction de Contraintes (CSP)
 
+*Antoine AGRÉ - 5A ICy - INSA Hauts-de-France - Automne 2023*
+
 ## Table des matières
 
-1. Contexte
-    1. Sujet et objectifs
-    2. Format du rendu
-2. 
+1. [Contexte](#contexte)
+    1. [Sujet et objectifs](#sujet-et-objectifs)
+    2. [Format du rendu](#format-du-rendu)
+2. [Programme](#programme)
+    1. [Modélisation du problème](#modélisation-du-problème)
+    2. [Structure du programme](#structure-du-programme)
+3. [Résultats](#résultats)
+    1. [Mesures](#mesures)
+    2. [Analyse](#analyse)
+
+---
+
+## Contexte
+
+Ce programme a été réalisé dans le cadre du cours de **Programmation par Contraintes**, qui a surtout porté sur les Problèmes de Satisfaction de Contraintes (CSP) et les méthodes, algorithmes, heuristiques et langages utilisés pour les résoudre.
+
+### Sujet et objectifs
+
+Le sujet porte sur deux objectifs :
+
+1. **Générer aléatoirement des CSP** selon 4 paramètres :
+    - Le **nombre de variables** ;
+    - La **taille des domaines** de ces variables ; 
+    - La **densité du CSP** (la proportion des couples de variables qui possèdent une contrainte) ;
+    - La **dureté des contraintes** du CSP (la proportion des couples de valeurs possibles qui sont autorisés pour chaque contrainte) ;
+2. **Implémenter et appliquer 3 algorithmes** de recherche de solution de CSP :
+    - Le **backtracking chronologique** "naïf" ;
+    - Le **backjumping basé sur le graphe** (Graph-Based Backjumping) ;
+    - Le **forward-checking**.
+
+Aucun filtrage n'est utilisé. 
+
+Pour simplifier leur exécution, les algorithmes s'arrêteront à la première solution trouvée, et leur but peut donc être considéré comme état de vérifier l'existence de solutions pour un CSP donné. 
+
+Les assignations potentielles seront explorées dans le même ordre pour chaque algorithme, et ils devraient donc tous retourner la même solution si elle existe. 
+
+### Format du rendu
+
+c
+
+## Programme
+
+d
+
+### Modélisation du problème
+
+e
+
+### Structure du programme
+
+f
+
+## Résultats
+
+g
+
+### Mesures
+
+h
+
+### Analyse
+
+i
+
+
 
 
 <br><br><br><br><br><br><br><br><br><br>
