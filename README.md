@@ -84,7 +84,7 @@ On définit une classe `CSP` dans `csp.py`, qui contient les variables suivantes
 - `domain_size` : *un entier*, la taille du domaine de chaque variables (on choisit de se limiter à des CSP dans lesquels chaque variable a le même domaine) ;
 - `constraints` : *une matrice à 2 dimensions contenant `None` ou une liste de couples de valeurs*, qui modélise les contraintes entre les variables de ce CSP.
 
-Pour simplifier le problème, on aura donc toujours des variables désignées par un entier de $0$ à $\text{nb\_variables} - 1$, dont les valeurs possibles seront entières et iront de $0$ à $\text{domain\_size} - 1$.
+Pour simplifier le problème, on aura donc toujours des variables désignées par un entier de `0` à `nb_variables-1`, dont les valeurs possibles seront entières et iront de `0` à `domain_size-1`.
 
 `constraints` est une matrice de taille [`nb_variables`][`nb_variables`], dans laquelle `constraints[i][j]` représente donc les contraintes entre les variables `i` et `j`.
 
