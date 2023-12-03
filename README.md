@@ -108,6 +108,7 @@ Dans les algorithmes de recherche de solution, une assignation (partielle ou tot
 
 Le code source a la structure suivante :
 
+- `dist/` : contient les [**exécutables**](#exécutables) de démonstration ;
 - `graphs/` : contient les **graphes** générés par les mesures ;
 - `randomcsp/` : le **package principal** qui contient le code source ;
     - `solver/` : le **package** contenant **les algorithmes** de recherche de solution ;
@@ -209,7 +210,7 @@ Les exécutables sont générés avec `pyinstaller`, de la façon suivante :
 
 ```pyinstaller -F randomscp/__main__.py```
 
-Les exécutables fournis sont les suivants :
+Les exécutables fournis, qui se trouvent dans le répertoire `dist/`, sont les suivants :
 
 - `tests.exe` : exécute les mêmes tests utilisés pour obtenir les résultats fournis (peut prendre plusieurs dizaines de minutes) ;
 - `smaller_tests.exe` : exécute une démo des tests, avec des valeurs moins élevées, qui devrait être exécuté en quelques secondes ;
